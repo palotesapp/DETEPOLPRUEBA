@@ -477,112 +477,82 @@ function setSelectWithInput(selectName, excelValue) {
 }
 
 	
-  // Cargar Excel previo con soporte para horas y OTRO
   async function cargarExcel() {
-    const input = document.getElementById("fileInputXLSX");
-    input.value = null; // reset para poder cargar mismo archivo varias veces
-    input.click();
+  const input = document.getElementById("fileInputXLSX");
+  input.value = null; // reset para poder cargar mismo archivo varias veces
+  input.click();
 
-    input.onchange = async (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
+  input.onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-      try {
-        const data = await file.arrayBuffer();
-        const workbook = XLSX.read(data, { type: "array" });
-        const sheet = workbook.Sheets[workbook.SheetNames[0]];
-        const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+    try {
+      const data = await file.arrayBuffer();
+      const workbook = XLSX.read(data, { type: "array" });
+      const sheet = workbook.Sheets[workbook.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
-        rows.forEach(([pregunta, respuesta]) => {
-          if (!pregunta) return;
-          const qNorm = normalizeKey(pregunta);
-          const r = (respuesta || "").toString().trim();
+      rows.forEach(([pregunta, respuesta]) => {
+        console.log("Pregunta leída:", pregunta, "Respuesta:", respuesta);
+        if (!pregunta) return;
+        const qNorm = normalizeKey(pregunta);
+        const r = (respuesta || "").toString().trim();
 
-		if (qNorm === "TIPO DOCUMENTO" || qNorm === "TIPO DOCUMENTO_OPCION") {
-  const select = document.querySelector('[name="TIPO DOCUMENTO_OPCION"]');
-  const input = document.querySelector('[name="TIPO DOCUMENTO"]');
-  if (!select) return;
+        // Condición mejorada para TIPO DOCUMENTO
+        if (qNorm.includes("TIPO") && qNorm.includes("DOCUMENTO")) {
+          console.log("Procesando TIPO DOCUMENTO con valor:", r);
+          setSelectWithInput("TIPO DOCUMENTO_OPCION", r);
+          return;
+        }
 
-  // Limpia valor leído
-  let val = r.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+        // Casos con combo "NO APORTA/OTRO"
+        if (qNorm === "DOMICILIO") { setSelectWithInput("DOMICILIO_OPCION", r); return; }
+        if (qNorm === "TELEFONO") { setSelectWithInput("TELÉFONO_OPCION", r); return; }
+        if (qNorm === "NOMBREDELOSPADRES") { setSelectWithInput("NOMBRE_PADRES_OPCION", r); return; }
+        if (qNorm === "ABOGADO") { setSelectWithInput("ABOGADO_OPCION", r); return; }
+        if (qNorm === "COMUNICARSECON") { setSelectWithInput("COMUNICARSE CON_OPCION", r); return; }
+        if (qNorm === "INFORMARDESUDETENCION" || qNorm === "INFORMARDESUDETENCIONA" || qNorm === "INFORMARDESUDETENCIONA:") { 
+          setSelectWithInput("INFORMAR DE SU DETENCION_OPCION", r); 
+          return; 
+        }
+        if (qNorm === "INTERPRETE") { setSelectWithInput("INTERPRETE_OPCION", r); return; }
 
-  // Opciones del select normalizadas
-  const opciones = Array.from(select.options).map(o => o.value.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase());
+        // Delitos múltiples
+        if (qNorm === "DELITO") {
+          delitosElegidos = r.split(/,\s*|\s+y\s+/).map(v => v.trim()).filter(Boolean);
+          renderDelitos();
+          return;
+        }
 
-  // Buscar opción que coincida
-  let index = opciones.indexOf(val);
-
-  if (index === -1) {
-    // No coincide, asignar OTRO y poner valor en input
-    index = opciones.indexOf("OTRO");
-    if (index !== -1) {
-      select.selectedIndex = index;
-      if (input) {
-        input.value = r.trim();
-        input.style.display = "block";
-      }
-    }
-  } else {
-    // Coincide, asignar select y ocultar input
-    select.selectedIndex = index;
-    if (input) {
-      input.value = "";
-      input.style.display = "none";
-    }
-  }
-  select.dispatchEvent(new Event("change"));
-  return;
-}
-
-          // Casos con combo "NO APORTA/OTRO"
-          if (qNorm === "DOMICILIO") { setSelectWithInput("DOMICILIO_OPCION", r); return; }
-          if (qNorm === "TELEFONO") { setSelectWithInput("TELÉFONO_OPCION", r); return; }
-          if (qNorm === "NOMBREDELOSPADRES") { setSelectWithInput("NOMBRE_PADRES_OPCION", r); return; }
-          if (qNorm === "ABOGADO") { setSelectWithInput("ABOGADO_OPCION", r); return; }
-          if (qNorm === "COMUNICARSECON") { setSelectWithInput("COMUNICARSE CON_OPCION", r); return; }
-          if (qNorm === "INFORMARDESUDETENCION" || qNorm === "INFORMARDESUDETENCIONA" || qNorm === "INFORMARDESUDETENCIONA:") { 
-  setSelectWithInput("INFORMAR DE SU DETENCION_OPCION", r); 
-  return; 
-}
-          if (qNorm === "INTERPRETE") { setSelectWithInput("INTERPRETE_OPCION", r); return; }
-
-          // Caso especial: delitos múltiples
-          if (qNorm === "DELITO") {
-            delitosElegidos = r.split(/,\s*|\s+y\s+/).map(v => v.trim()).filter(Boolean);
-            renderDelitos();
-            return;
-          }
-
-          // Campos simples (input/select/textarea)
-          const allInputs = document.querySelectorAll("[name]");
-          for (const el of allInputs) {
-            const elNorm = normalizeKey(el.name);
-            if (elNorm === qNorm) {
-              if (el.tagName === "SELECT") {
-                el.value = r;
-                el.dispatchEvent(new Event("change"));
-              } else if (el.tagName === "INPUT" && el.type === "time") {
-                // Validar formato HH:MM y asignar
-                if (/^\d{1,2}:\d{2}$/.test(r)) {
-                  el.value = r.length === 4 ? "0" + r : r; // Asegura formato 0X:YY
-                } else {
-                  el.value = "";
-                }
+        // Campos simples (input/select/textarea)
+        const allInputs = document.querySelectorAll("[name]");
+        for (const el of allInputs) {
+          const elNorm = normalizeKey(el.name);
+          if (elNorm === qNorm) {
+            if (el.tagName === "SELECT") {
+              el.value = r;
+              el.dispatchEvent(new Event("change"));
+            } else if (el.tagName === "INPUT" && el.type === "time") {
+              if (/^\d{1,2}:\d{2}$/.test(r)) {
+                el.value = r.length === 4 ? "0" + r : r;
               } else {
-                el.value = r;
+                el.value = "";
               }
-              break;
+            } else {
+              el.value = r;
             }
+            break;
           }
-        });
+        }
+      });
 
-        document.getElementById("message").innerText = "✅ XLSX cargado y formulario rellenado";
-      } catch (err) {
-        console.error(err);
-        document.getElementById("message").innerText = "❌ Error al cargar XLSX: " + (err?.message || err);
-      }
-    };
-  }
+      document.getElementById("message").innerText = "✅ XLSX cargado y formulario rellenado";
+    } catch (err) {
+      console.error(err);
+      document.getElementById("message").innerText = "❌ Error al cargar XLSX: " + (err?.message || err);
+    }
+  };
+}
 
   // Generar XLSX resumen y descargar
   async function generarXLSX() {
@@ -745,6 +715,7 @@ function setSelectWithInput(selectName, excelValue) {
 
 </body>
 </html>
+
 
 
 
