@@ -498,31 +498,8 @@ function setSelectWithInput(selectName, excelValue) {
           const qNorm = normalizeKey(pregunta);
           const r = (respuesta || "").toString().trim();
 
-			if (qNorm === "TIPO DOCUMENTO" || qNorm === "TIPO DOCUMENTO_OPCION") {
-  const select = document.querySelector('[name="TIPO DOCUMENTO_OPCION"]');
-  const input = document.querySelector('[name="TIPO DOCUMENTO"]');
-  const valNorm = normalizeKey(r);
-
-  const opcionesNorm = Array.from(select.options).map(o => normalizeKey(o.value));
-  const index = opcionesNorm.indexOf(valNorm);
-
-  if (index !== -1) {
-    select.selectedIndex = index;
-    if (input) {
-      input.value = "";
-      input.style.display = "none";
-    }
-  } else {
-    const otroIndex = opcionesNorm.indexOf("OTRO");
-    if (otroIndex !== -1) {
-      select.selectedIndex = otroIndex;
-    }
-    if (input) {
-      input.value = r;
-      input.style.display = "block";
-    }
-  }
-  select.dispatchEvent(new Event("change"));
+		if (qNorm === "TIPO DOCUMENTO" || qNorm === "TIPO DOCUMENTO_OPCION") {
+  setSelectWithInput("TIPO DOCUMENTO_OPCION", r);
   return;
 }
 
@@ -737,6 +714,7 @@ function setSelectWithInput(selectName, excelValue) {
 
 </body>
 </html>
+
 
 
 
