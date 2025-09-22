@@ -504,7 +504,10 @@ function setSelectWithInput(selectName, excelValue) {
           if (qNorm === "NOMBREDELOSPADRES") { setSelectWithInput("NOMBRE_PADRES_OPCION", r); return; }
           if (qNorm === "ABOGADO") { setSelectWithInput("ABOGADO_OPCION", r); return; }
           if (qNorm === "COMUNICARSECON") { setSelectWithInput("COMUNICARSE CON_OPCION", r); return; }
-          if (qNorm === "INFORMARDESUDETENCION" || qNorm === "INFORMARDESUDETENCION") { setSelectWithInput("INFORMAR DE SU DETENCIÓN_OPCION", r); return; }
+          if (qNorm === "INFORMARDESUDETENCION" || qNorm === "INFORMARDESUDETENCIONA" || qNorm === "INFORMARDESUDETENCIONA:") { 
+  setSelectWithInput("INFORMAR DE SU DETENCION_OPCION", r); 
+  return; 
+}
           if (qNorm === "INTERPRETE") { setSelectWithInput("INTERPRETE_OPCION", r); return; }
 
           // Caso especial: delitos múltiples
@@ -706,6 +709,7 @@ function setSelectWithInput(selectName, excelValue) {
 
 </body>
 </html>
+
 
 
 
