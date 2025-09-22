@@ -504,9 +504,7 @@ function setSelectWithInput(selectName, excelValue) {
           if (qNorm === "NOMBREDELOSPADRES") { setSelectWithInput("NOMBRE_PADRES_OPCION", r); return; }
           if (qNorm === "ABOGADO") { setSelectWithInput("ABOGADO_OPCION", r); return; }
           if (qNorm === "COMUNICARSECON") { setSelectWithInput("COMUNICARSE CON_OPCION", r); return; }
-          if (qNorm === "INFORMARDESUDETENCION" || qNorm === "INFORMARDESUDETENCIONA") {
-            setSelectWithInput("INFORMAR DE SU DETENCIÓN_OPCION", r); return;
-          }
+          if (qNorm === "INFORMARDESUDETENCION" || qNorm === "INFORMARDESUDETENCION") { setSelectWithInput("INFORMAR DE SU DETENCIÓN_OPCION", r); return; }
           if (qNorm === "INTERPRETE") { setSelectWithInput("INTERPRETE_OPCION", r); return; }
 
           // Caso especial: delitos múltiples
@@ -584,8 +582,8 @@ function setSelectWithInput(selectName, excelValue) {
       const infDisplay = (data["INFORMAR DE SU DETENCIÓN_OPCION"] === "OTRO") ? (data["INFORMAR DE SU DETENCIÓN"] || "") : (data["INFORMAR DE SU DETENCIÓN_OPCION"] || "");
 
       data["ABOGADO"] = abDisplay;
-      data["COMUNICARSE CON:"] = (data["COMUNICARSE CON_OPCION"] === "OTRO") ? (data["COMUNICARSE CON:"] || "") : (data["COMUNICARSE CON_OPCION"] || "");
-      data["INFORMAR DE SU DETENCIÓN"] = infDisplay;
+      data["COMUNICARSE CON:"] = (data["COMUNICARSE CON_OPCION"] === "OTRO") ? (data["COMUNICARSE CON:"] || "") : (data["COMUNICARSE CON_OPCION"] || ""); 
+      data["INFORMAR DE SU DETENCIÓN"] = (data["INFORMAR DE SU DETENCIÓN_OPCION"] === "OTRO") ? (data["INFORMAR DE SU DETENCION:"] || "") : (data["INFORMAR DE SU DETENCIÓN_OPCION"] || "");
       data["NOMBRE_PADRES"] = nomDisplay;
       data["Nombre de los Padres"] = nomDisplay;
       data["DOMICILIO"] = (data["DOMICILIO_OPCION"] === "OTRO") ? (data["DOMICILIO"] || "") : (data["DOMICILIO_OPCION"] || "");
@@ -628,7 +626,7 @@ function setSelectWithInput(selectName, excelValue) {
         ["Indicios por los que se detiene", U(data["INDICIOS POR LOS QUE SE DETIENE"])],
         ["Abogado", U(data["ABOGADO"])],
         ["Comunicarse con", U(data["COMUNICARSE CON:"])],
-        ["Informar de su detención a:", U(data["INFORMAR DE SU DETENCIÓN"])],
+        ["Informar de su detención", U(data["INFORMAR DE SU DETENCIÓN"])],
         ["Intérprete", U(interpreteDisplay)],
         ["Médico", U(data["MEDICO"])],
         ["Consulado", U(data["CONSULADO"])],
@@ -708,5 +706,6 @@ function setSelectWithInput(selectName, excelValue) {
 
 </body>
 </html>
+
 
 
