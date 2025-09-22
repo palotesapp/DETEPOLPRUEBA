@@ -498,6 +498,28 @@ function setSelectWithInput(selectName, excelValue) {
           const qNorm = normalizeKey(pregunta);
           const r = (respuesta || "").toString().trim();
 
+			if (qNorm === "TIPO DOCUMENTO" || qNorm === "TIPO DOCUMENTO_OPCION") {
+  const select = document.querySelector('[name="TIPO DOCUMENTO_OPCION"]');
+  const input = document.querySelector('[name="TIPO DOCUMENTO"]');
+  const valNorm = normalizeKey(r);
+  const opciones = Array.from(select.options).map(o => normalizeKey(o.value));
+  if (opciones.includes(valNorm)) {
+    select.value = r;
+    if (input) {
+      input.value = "";
+      input.style.display = "none";
+    }
+  } else {
+    select.value = "OTRO";
+    if (input) {
+      input.value = r;
+      input.style.display = "block";
+    }
+  }
+  select.dispatchEvent(new Event("change"));
+  return;
+}
+
           // Casos con combo "NO APORTA/OTRO"
           if (qNorm === "DOMICILIO") { setSelectWithInput("DOMICILIO_OPCION", r); return; }
           if (qNorm === "TELEFONO") { setSelectWithInput("TELÉFONO_OPCION", r); return; }
@@ -709,6 +731,7 @@ function setSelectWithInput(selectName, excelValue) {
 
 </body>
 </html>
+
 
 
 
