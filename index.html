@@ -245,11 +245,11 @@
       </div>
       <div class="field-card" style="color: orange;">
         <label>Informar de su detención a:</label>
-        <select name="INFORMAR DE SU DETENCIÓN_OPCION" id="informardeOpcion">
+        <select name="INFORMAR DE SU DETENCION_OPCION" id="informardeOpcion">
           <option value="NADIE" selected>NADIE</option>
           <option value="OTRO">OTRO</option>
         </select>
-        <input type="text" name="INFORMAR DE SU DETENCION A:" id="informardeTexto" placeholder="Nombre y teléfono" style="display:none;">
+        <input type="text" name="INFORMAR DE SU DETENCION:" id="informardeTexto" placeholder="Nombre y teléfono" style="display:none;">
       </div>
 
       <div class="field-card" style="color: orange;">
@@ -579,11 +579,11 @@ function setSelectWithInput(selectName, excelValue) {
       const nomDisplay = (data["NOMBRE_PADRES_OPCION"] === "OTRO") ? (data["NOMBRE_PADRES"] || "") : (data["NOMBRE_PADRES_OPCION"] || "");
       const telDisplay = (data["TELÉFONO_OPCION"] === "OTRO") ? (data["TELÉFONO"] || "") : (data["TELÉFONO_OPCION"] || "");
       const abDisplay = (data["ABOGADO_OPCION"] === "OTRO") ? (data["ABOGADO"] || "") : (data["ABOGADO_OPCION"] || "");
-      const infDisplay = (data["INFORMAR DE SU DETENCIÓN_OPCION"] === "OTRO") ? (data["INFORMAR DE SU DETENCIÓN"] || "") : (data["INFORMAR DE SU DETENCIÓN_OPCION"] || "");
+      const infDisplay = (data["INFORMAR DE SU DETENCION_OPCION"] === "OTRO") ? (data["INFORMAR DE SU DETENCION"] || "") : (data["INFORMAR DE SU DETENCION_OPCION"] || "");
 
       data["ABOGADO"] = abDisplay;
       data["COMUNICARSE CON:"] = (data["COMUNICARSE CON_OPCION"] === "OTRO") ? (data["COMUNICARSE CON:"] || "") : (data["COMUNICARSE CON_OPCION"] || ""); 
-      data["INFORMAR DE SU DETENCIÓN"] = (data["INFORMAR DE SU DETENCIÓN_OPCION"] === "OTRO") ? (data["INFORMAR DE SU DETENCION:"] || "") : (data["INFORMAR DE SU DETENCIÓN_OPCION"] || "");
+      data["INFORMAR DE SU DETENCION"] = (data["INFORMAR DE SU DETENCION_OPCION"] === "OTRO") ? (data["INFORMAR DE SU DETENCION:"] || "") : (data["INFORMAR DE SU DETENCION_OPCION"] || "");
       data["NOMBRE_PADRES"] = nomDisplay;
       data["Nombre de los Padres"] = nomDisplay;
       data["DOMICILIO"] = (data["DOMICILIO_OPCION"] === "OTRO") ? (data["DOMICILIO"] || "") : (data["DOMICILIO_OPCION"] || "");
@@ -626,7 +626,7 @@ function setSelectWithInput(selectName, excelValue) {
         ["Indicios por los que se detiene", U(data["INDICIOS POR LOS QUE SE DETIENE"])],
         ["Abogado", U(data["ABOGADO"])],
         ["Comunicarse con", U(data["COMUNICARSE CON:"])],
-        ["Informar de su detención", U(data["INFORMAR DE SU DETENCIÓN"])],
+        ["Informar de su detención", U(data["INFORMAR DE SU DETENCION"])],
         ["Intérprete", U(interpreteDisplay)],
         ["Médico", U(data["MEDICO"])],
         ["Consulado", U(data["CONSULADO"])],
@@ -706,6 +706,7 @@ function setSelectWithInput(selectName, excelValue) {
 
 </body>
 </html>
+
 
 
 
