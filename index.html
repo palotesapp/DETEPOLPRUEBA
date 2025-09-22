@@ -504,117 +504,126 @@
 
   // Generar XLSX resumen y descargar
   async function generarXLSX() {
-    const msg = document.getElementById("message");
-    msg.innerText = "Generando XLSX...";
+  const msg = document.getElementById("message");
+  msg.innerText = "Generando XLSX...";
 
-    try {
-      const form = document.getElementById("registroForm");
-      const fd = new FormData(form);
-      const data = {};
-      fd.forEach((v,k) => data[k] = v);
+  try {
+    const form = document.getElementById("registroForm");
+    const fd = new FormData(form);
+    const data = {};
+    fd.forEach((v,k) => data[k] = v);
 
-      // Normalizaciones previas
-      const optTD = data["TIPO DOCUMENTO_OPCION"];
-      data["TIPO DOCUMENTO"] = (optTD === "OTRO") ? (data["TIPO DOCUMENTO"] || "") : optTD;
-      if(optTD === "INDOCUMENTADO/A"){ data["NºDOCUMENTO"] = ""; } else { data["NºDOCUMENTO"] = data["NºDOCUMENTO"] || ""; }
-      data["SEXO"] = data["SEXO_OPCION"] || "";
-      data["INSTRUCTOR"] = data["INSTRUCTOR"] || "";
-      data["FECHA_GENERACION"] = document.getElementById('fechaGeneracion')?.value || '';
+    // Normalizaciones previas (igual que antes)
+    const optTD = data["TIPO DOCUMENTO_OPCION"];
+    data["TIPO DOCUMENTO"] = (optTD === "OTRO") ? (data["TIPO DOCUMENTO"] || "") : optTD;
+    if(optTD === "INDOCUMENTADO/A"){ data["NºDOCUMENTO"] = ""; } else { data["NºDOCUMENTO"] = data["NºDOCUMENTO"] || ""; }
+    data["SEXO"] = data["SEXO_OPCION"] || "";
+    data["INSTRUCTOR"] = data["INSTRUCTOR"] || "";
+    data["FECHA_GENERACION"] = document.getElementById('fechaGeneracion')?.value || '';
 
-      // Normalizar delitos elegidos en sub-globo
-      let delitoTexto = "";
-      if (delitosElegidos.length === 1) {
-        delitoTexto = delitosElegidos[0];
-      } else if (delitosElegidos.length === 2) {
-        delitoTexto = delitosElegidos[0] + " y " + delitosElegidos[1];
-      } else if (delitosElegidos.length > 2) {
-        delitoTexto = delitosElegidos.slice(0, -1).join(", ") + " y " + delitosElegidos[delitosElegidos.length - 1];
-      }
-      data["DELITO"] = delitoTexto;
-
-      const abOpt = data["ABOGADO_OPCION"];
-      if(abOpt === "DE OFICIO"){ data["ABOGADO"] = "de oficio."; }
-      else if(abOpt === "OTRO"){ data["ABOGADO"] = (data["ABOGADO"] || ""); }
-      else { data["ABOGADO"] = data["ABOGADO"] || ""; }
-
-      const ccOpt = data["COMUNICARSE CON_OPCION"];
-      if(ccOpt === "NADIE"){ data["COMUNICARSE CON:"] = "nadie."; }
-      else if(ccOpt === "OTRO"){ data["COMUNICARSE CON:"] = (data["COMUNICARSE CON:"] || ""); }
-      else { data["COMUNICARSE CON:"] = data["COMUNICARSE CON:"] || ""; }
-
-      const infOpt = data["INFORMAR DE SU DETENCION A:_OPCION"];
-      if(infOpt === "NADIE"){ data["INFORMAR DE SU DETENCION A:"] = "nadie."; }
-      else if(infOpt === "OTRO"){ data["INFORMAR DE SU DETENCION A:"] = (data["INFORMAR DE SU DETENCION A:"] || ""); }
-      else { data["INFORMAR DE SU DETENCION A:"] = data["INFORMAR DE SU DETENCION A:"] || ""; }
-
-      const intOpt = data["INTERPRETE_OPCION"] || "NO";
-      let interpreteDisplay = "NO";
-
-      if (intOpt === "OTRO") {
-        interpreteDisplay = data["IDIOMA"] || "";
-      } else if (intOpt !== "NO") {
-        interpreteDisplay = intOpt;
-      }
-
-      const nomDisplay = (data["NOMBRE_PADRES_OPCION"] === "OTRO") ? (data["NOMBRE_PADRES"] || "") : (data["NOMBRE_PADRES_OPCION"] || "");
-      const domDisplay = (data["DOMICILIO_OPCION"] === "OTRO") ? (data["DOMICILIO"] || "") : (data["DOMICILIO_OPCION"] || "");
-      const telDisplay = (data["TELÉFONO_OPCION"] === "OTRO") ? (data["TELÉFONO"] || "") : (data["TELÉFONO_OPCION"] || "");
-
-      data["MEDICO"] = (data["MEDICO"] === "SI") ? "SI" : "NO";
-      data["CONSULADO"] = (data["CONSULADO"] === "SI") ? "SI" : "NO";
-
-      data["NOMBRE_PADRES"] = nomDisplay;
-      data["Nombre de los Padres"] = nomDisplay;
-      data["DOMICILIO"] = domDisplay;
-      data["TELÉFONO"] = telDisplay;
-
-      // Construir filas para XLSX
-      const filas = [
-        ["Nombre", U(data["Nombre"])],
-        ["Apellidos", U(data["APELLIDOS"])],
-        ["Tipo de documento", U(data["TIPO DOCUMENTO"])],
-        ["Nº Documento", U(data["NºDOCUMENTO"])],
-        ["Sexo", U(data["SEXO"])],
-        ["Nacionalidad", U(data["NACIONALIDAD"])],
-        ["Nombre de los Padres", U(data["Nombre de los Padres"])],
-        ["Fecha de nacimiento", U(data["FECHA DE NACIMIENTO"])],
-        ["Lugar de nacimiento", U(data["LUGAR DE NACIMIENTO"])],
-        ["Domicilio", U(domDisplay)],
-        ["Teléfono", U(telDisplay)],
-        ["Delito", U(data["DELITO"])],
-        ["C.P. Agentes", U(data["C.P. AGENTES"])],
-        ["Diligencias", U(data["DILIGENCIAS"])],
-        ["Instructor", U(data["INSTRUCTOR"])],
-        ["Lugar del hecho", U(data["LUGAR DEL HECHO"])],
-        ["Lugar de la detención", U(data["LUGAR DE LA DETENCIÓN"])],
-        ["Hora del hecho", (document.getElementById('horaHecho')?.value || data["HORA DEL HECHO"] || "").trim()],
-        ["Hora de la detención", (document.getElementById('horaDetencion')?.value || data["HORA DE LA DETENCIÓN"] || "").trim()],
-        ["Breve resumen de los hechos", U(data["BREVE RESUMEN DE LOS HECHOS"])],
-        ["Indicios por los que se detiene", U(data["INDICIOS POR LOS QUE SE DETIENE"])],
-        ["Abogado", U(data["ABOGADO"])],
-        ["Comunicarse con", U(data["COMUNICARSE CON:"])],
-        ["Informar de su detención a:", U(data["INFORMAR DE SU DETENCION A:"])],
-        ["Intérprete", U(interpreteDisplay)],
-        ["Médico", U(data["MEDICO"])],
-        ["Consulado", U(data["CONSULADO"])],
-        ["Indicativo", U(data["Indicativo"])],
-        ["Fecha de generación", U(data["FECHA_GENERACION"])]
-      ];
-
-      // Generar XLSX en memoria
-      const xlsxData = await generarXLSXUint8(filas, "Resumen");
-
-      // Descargar XLSX
-      const blob = new Blob([xlsxData], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
-      const nombreArchivo = `${sanitizeForFilename(data["Nombre"]||"")} ${sanitizeForFilename(data["APELLIDOS"]||"")} ${new Date().toISOString().slice(0,10)}.xlsx`.trim();
-      saveBlob(blob, nombreArchivo);
-
-      msg.innerText = "✅ XLSX generado y descargado";
-    } catch (err) {
-      console.error(err);
-      document.getElementById("message").innerText = "❌ Error al generar XLSX: " + (err?.message || err);
+    // Normalizar delitos elegidos en sub-globo
+    let delitoTexto = "";
+    if (delitosElegidos.length === 1) {
+      delitoTexto = delitosElegidos[0];
+    } else if (delitosElegidos.length === 2) {
+      delitoTexto = delitosElegidos[0] + " y " + delitosElegidos[1];
+    } else if (delitosElegidos.length > 2) {
+      delitoTexto = delitosElegidos.slice(0, -1).join(", ") + " y " + delitosElegidos[delitosElegidos.length - 1];
     }
+    data["DELITO"] = delitoTexto;
+
+    const abOpt = data["ABOGADO_OPCION"];
+    if(abOpt === "DE OFICIO"){ data["ABOGADO"] = "de oficio."; }
+    else if(abOpt === "OTRO"){ data["ABOGADO"] = (data["ABOGADO"] || ""); }
+    else { data["ABOGADO"] = data["ABOGADO"] || ""; }
+
+    const ccOpt = data["COMUNICARSE CON_OPCION"];
+    if(ccOpt === "NADIE"){ data["COMUNICARSE CON:"] = "nadie."; }
+    else if(ccOpt === "OTRO"){ data["COMUNICARSE CON:"] = (data["COMUNICARSE CON:"] || ""); }
+    else { data["COMUNICARSE CON:"] = data["COMUNICARSE CON:"] || ""; }
+
+    const infOpt = data["INFORMAR DE SU DETENCION A:_OPCION"];
+    if(infOpt === "NADIE"){ data["INFORMAR DE SU DETENCION A:"] = "nadie."; }
+    else if(infOpt === "OTRO"){ data["INFORMAR DE SU DETENCION A:"] = (data["INFORMAR DE SU DETENCION A:"] || ""); }
+    else { data["INFORMAR DE SU DETENCION A:"] = data["INFORMAR DE SU DETENCION A:"] || ""; }
+
+    const intOpt = data["INTERPRETE_OPCION"] || "NO";
+    let interpreteDisplay = "NO";
+
+    if (intOpt === "OTRO") {
+      interpreteDisplay = data["IDIOMA"] || "";
+    } else if (intOpt !== "NO") {
+      interpreteDisplay = intOpt;
+    }
+
+    const nomDisplay = (data["NOMBRE_PADRES_OPCION"] === "OTRO") ? (data["NOMBRE_PADRES"] || "") : (data["NOMBRE_PADRES_OPCION"] || "");
+    const domDisplay = (data["DOMICILIO_OPCION"] === "OTRO") ? (data["DOMICILIO"] || "") : (data["DOMICILIO_OPCION"] || "");
+    const telDisplay = (data["TELÉFONO_OPCION"] === "OTRO") ? (data["TELÉFONO"] || "") : (data["TELÉFONO_OPCION"] || "");
+
+    data["MEDICO"] = (data["MEDICO"] === "SI") ? "SI" : "NO";
+    data["CONSULADO"] = (data["CONSULADO"] === "SI") ? "SI" : "NO";
+
+    data["NOMBRE_PADRES"] = nomDisplay;
+    data["Nombre de los Padres"] = nomDisplay;
+    data["DOMICILIO"] = domDisplay;
+    data["TELÉFONO"] = telDisplay;
+
+    // Construir filas para XLSX
+    const filas = [
+      ["Nombre", U(data["Nombre"])],
+      ["Apellidos", U(data["APELLIDOS"])],
+      ["Tipo de documento", U(data["TIPO DOCUMENTO"])],
+      ["Nº Documento", U(data["NºDOCUMENTO"])],
+      ["Sexo", U(data["SEXO"])],
+      ["Nacionalidad", U(data["NACIONALIDAD"])],
+      ["Nombre de los Padres", U(data["Nombre de los Padres"])],
+      ["Fecha de nacimiento", U(data["FECHA DE NACIMIENTO"])],
+      ["Lugar de nacimiento", U(data["LUGAR DE NACIMIENTO"])],
+      ["Domicilio", U(domDisplay)],
+      ["Teléfono", U(telDisplay)],
+      ["Delito", U(data["DELITO"])],
+      ["C.P. Agentes", U(data["C.P. AGENTES"])],
+      ["Diligencias", U(data["DILIGENCIAS"])],
+      ["Instructor", U(data["INSTRUCTOR"])],
+      ["Lugar del hecho", U(data["LUGAR DEL HECHO"])],
+      ["Lugar de la detención", U(data["LUGAR DE LA DETENCIÓN"])],
+      ["Hora del hecho", (document.getElementById('horaHecho')?.value || data["HORA DEL HECHO"] || "").trim()],
+      ["Hora de la detención", (document.getElementById('horaDetencion')?.value || data["HORA DE LA DETENCIÓN"] || "").trim()],
+      ["Breve resumen de los hechos", U(data["BREVE RESUMEN DE LOS HECHOS"])],
+      ["Indicios por los que se detiene", U(data["INDICIOS POR LOS QUE SE DETIENE"])],
+      ["Abogado", U(data["ABOGADO"])],
+      ["Comunicarse con", U(data["COMUNICARSE CON:"])],
+      ["Informar de su detención a:", U(data["INFORMAR DE SU DETENCION A:"])],
+      ["Intérprete", U(interpreteDisplay)],
+      ["Médico", U(data["MEDICO"])],
+      ["Consulado", U(data["CONSULADO"])],
+      ["Indicativo", U(data["Indicativo"])],
+      ["Fecha de generación", U(data["FECHA_GENERACION"])]
+    ];
+
+    // Crear libro y hoja con XLSX.js
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.aoa_to_sheet(filas);
+
+    // Ajustar ancho columnas
+    ws['!cols'] = [{wch:40}, {wch:40}];
+
+    XLSX.utils.book_append_sheet(wb, ws, "Resumen");
+
+    // Generar archivo XLSX en formato binario
+    const wbout = XLSX.write(wb, {bookType:'xlsx', type:'array'});
+
+    // Crear Blob y descargar
+    const blob = new Blob([wbout], {type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+    const nombreArchivo = `${sanitizeForFilename(data["Nombre"]||"")} ${sanitizeForFilename(data["APELLIDOS"]||"")} ${new Date().toISOString().slice(0,10)}.xlsx`.trim();
+    saveBlob(blob, nombreArchivo);
+
+    msg.innerText = "✅ XLSX generado y descargado";
+  } catch (err) {
+    console.error(err);
+    document.getElementById("message").innerText = "❌ Error al generar XLSX: " + (err?.message || err);
   }
+}
 
   // Generar XLSX sin cabecera, dos columnas, ancho máx 40 chars, A derecha, B centrada, horas con formato h:mm
   async function generarXLSXUint8(rows, sheetName="Resumen"){
@@ -832,3 +841,4 @@
 
 </body>
 </html>
+
