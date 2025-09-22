@@ -431,7 +431,52 @@
 
     select.dispatchEvent(new Event("change"));
   }
+// Auxiliar: maneja selects con input asociado (NO APORTA / OTRO)
+function setSelectWithInput(selectName, excelValue) {
+  const select = document.querySelector(`[name="${selectName}"]`);
+  if (!select) return;
 
+  const card = select.closest(".field-card");
+  const textInput = card ? card.querySelector("input[type=text], textarea") : null;
+  const normExcel = normalizeKey(excelValue);
+
+  let matched = false;
+  for (const opt of select.options) {
+    if (normalizeKey(opt.value) === normExcel) {
+      select.value = opt.value;
+      matched = true;
+      if (textInput) {
+        textInput.value = "";
+        textInput.style.display = "none";  // OCULTAR input
+      }
+      break;
+    }
+  }
+
+  if (!matched) {
+    if (!excelValue || ["NOAPORTA","NO","DEOFICIO"].includes(normExcel)) {
+      // Selecciona opción directa
+      const fallback = Array.from(select.options).find(opt =>
+        ["NOAPORTA","NO","DEOFICIO"].includes(normalizeKey(opt.value))
+      );
+      if (fallback) select.value = fallback.value;
+      if (textInput) {
+        textInput.value = "";
+        textInput.style.display = "none";  // OCULTAR input
+      }
+    } else {
+      // Valor libre → OTRO
+      const otherOpt = Array.from(select.options).find(opt => normalizeKey(opt.value) === "OTRO");
+      if (otherOpt) select.value = otherOpt.value;
+      if (textInput) {
+        textInput.value = excelValue;
+        textInput.style.display = "block";  // MOSTRAR input con valor
+      }
+    }
+  }
+}
+
+	
   // Cargar Excel previo con soporte para horas y OTRO
   async function cargarExcel() {
     const input = document.getElementById("fileInputXLSX");
@@ -663,3 +708,4 @@
 
 </body>
 </html>
+
