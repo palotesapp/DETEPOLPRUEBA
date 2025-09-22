@@ -503,21 +503,16 @@ function setSelectWithInput(selectName, excelValue) {
   const input = document.querySelector('[name="TIPO DOCUMENTO"]');
   const valNorm = normalizeKey(r);
 
-  // Opciones normalizadas del select
   const opcionesNorm = Array.from(select.options).map(o => normalizeKey(o.value));
-
-  // Buscar índice de opción que coincida
   const index = opcionesNorm.indexOf(valNorm);
 
   if (index !== -1) {
-    // Asignar valor exacto de la opción encontrada
     select.selectedIndex = index;
     if (input) {
       input.value = "";
       input.style.display = "none";
     }
   } else {
-    // Si no coincide, asignar OTRO y mostrar input con valor
     const otroIndex = opcionesNorm.indexOf("OTRO");
     if (otroIndex !== -1) {
       select.selectedIndex = otroIndex;
@@ -742,6 +737,7 @@ function setSelectWithInput(selectName, excelValue) {
 
 </body>
 </html>
+
 
 
 
