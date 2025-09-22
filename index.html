@@ -498,10 +498,7 @@ function setSelectWithInput(selectName, excelValue) {
           const qNorm = normalizeKey(pregunta);
           const r = (respuesta || "").toString().trim();
 
-		if (qNorm === "TIPO DOCUMENTO" || qNorm === "TIPO DOCUMENTO_OPCION") {
-  setSelectWithInput("TIPO DOCUMENTO_OPCION", r);
-  return;
-}
+		if (qNorm === "TIPO DOCUMENTO") { setSelectWithInput("TIPO DOCUMENTO_OPCION", r); return; }
 
           // Casos con combo "NO APORTA/OTRO"
           if (qNorm === "DOMICILIO") { setSelectWithInput("DOMICILIO_OPCION", r); return; }
@@ -714,6 +711,7 @@ function setSelectWithInput(selectName, excelValue) {
 
 </body>
 </html>
+
 
 
 
