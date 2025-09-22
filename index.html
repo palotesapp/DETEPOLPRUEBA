@@ -499,7 +499,38 @@ function setSelectWithInput(selectName, excelValue) {
           const r = (respuesta || "").toString().trim();
 
 		if (qNorm === "TIPO DOCUMENTO" || qNorm === "TIPO DOCUMENTO_OPCION") {
-  setSelectWithInput("TIPO DOCUMENTO_OPCION", r);
+  const select = document.querySelector('[name="TIPO DOCUMENTO_OPCION"]');
+  const input = document.querySelector('[name="TIPO DOCUMENTO"]');
+  if (!select) return;
+
+  // Limpia valor leído
+  let val = r.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+
+  // Opciones del select normalizadas
+  const opciones = Array.from(select.options).map(o => o.value.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase());
+
+  // Buscar opción que coincida
+  let index = opciones.indexOf(val);
+
+  if (index === -1) {
+    // No coincide, asignar OTRO y poner valor en input
+    index = opciones.indexOf("OTRO");
+    if (index !== -1) {
+      select.selectedIndex = index;
+      if (input) {
+        input.value = r.trim();
+        input.style.display = "block";
+      }
+    }
+  } else {
+    // Coincide, asignar select y ocultar input
+    select.selectedIndex = index;
+    if (input) {
+      input.value = "";
+      input.style.display = "none";
+    }
+  }
+  select.dispatchEvent(new Event("change"));
   return;
 }
 
@@ -714,6 +745,7 @@ function setSelectWithInput(selectName, excelValue) {
 
 </body>
 </html>
+
 
 
 
