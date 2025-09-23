@@ -232,7 +232,7 @@ textarea {
           <option value="NADIE" selected>NADIE</option>
           <option value="OTRO">OTRO</option>
         </select>
-        <input type="text" name="INFORMAR DE SU DETENCION A:" id="informardeTexto" placeholder="Nombre y teléfono" style="display:none;">
+		  <input type="text" name="INFORMAR DE SU DETENCION:" id="informardeTexto" placeholder="Nombre y teléfono" style="display:none;">
       </div>
 
       <div class="field-card" style="color: orange;">
@@ -756,9 +756,9 @@ data["DELITO"]=delitoTexto;
         else { data["COMUNICARSE CON:"]= data["COMUNICARSE CON:"] || ""; }
 
 	const infOpt = data["INFORMAR DE SU DETENCION_OPCION"];
-        if(infOpt==="NADIE"){ data["INFORMAR DE SU DETENCION A:"]="nadie."; }
-        else if(infOpt==="OTRO"){ data["INFORMAR DE SU DETENCION A:"]= (data["INFORMAR DE SU DETENCION A:"]||""); }
-        else { data["INFORMAR DE SU DETENCION A:"]= data["INFORMAR DE SU DETENCION A:"] || ""; }
+if(infOpt==="NADIE"){ data["INFORMAR DE SU DETENCION:"]="nadie."; }
+else if(infOpt==="OTRO"){ data["INFORMAR DE SU DETENCION:"]= (data["INFORMAR DE SU DETENCION:"]||""); }
+else { data["INFORMAR DE SU DETENCION:"]= data["INFORMAR DE SU DETENCION:"] || ""; }
 
 
         const intOpt = data["INTERPRETE_OPCION"] || "NO";
@@ -949,6 +949,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </body>
 
 </html>
+
 
 
 
