@@ -391,8 +391,11 @@ function setSelectWithInput(selectName, excelValue) {
   const textInput = card ? card.querySelector("input[type=text], textarea") : null;
   const normExcel = normalizeKey(excelValue);
 
+  console.log(`setSelectWithInput: selectName=${selectName}, excelValue='${excelValue}', normExcel='${normExcel}'`);
+
   let matched = false;
   for (const opt of select.options) {
+    console.log(`  option value='${opt.value}', norm='${normalizeKey(opt.value)}'`);
     if (normalizeKey(opt.value) === normExcel) {
       select.value = opt.value;
       matched = true;
@@ -406,7 +409,6 @@ function setSelectWithInput(selectName, excelValue) {
 
   if (!matched) {
     if (!excelValue || ["NOAPORTA","NO","DEOFICIO"].includes(normExcel)) {
-      // Selecciona opción directa
       const fallback = Array.from(select.options).find(opt =>
         ["NOAPORTA","NO","DEOFICIO"].includes(normalizeKey(opt.value))
       );
@@ -416,7 +418,6 @@ function setSelectWithInput(selectName, excelValue) {
         textInput.style.display = "none";  // OCULTAR input
       }
     } else {
-      // Valor libre → OTRO
       const otherOpt = Array.from(select.options).find(opt => normalizeKey(opt.value) === "OTRO");
       if (otherOpt) select.value = otherOpt.value;
       if (textInput) {
@@ -752,10 +753,10 @@ data["DELITO"]=delitoTexto;
         else if(ccOpt==="OTRO"){ data["COMUNICARSE CON:"]= (data["COMUNICARSE CON:"]||""); }
         else { data["COMUNICARSE CON:"]= data["COMUNICARSE CON:"] || ""; }
 
-	const infOpt = data["INFORMAR DE DETENCION_OPCION"];
-if(infOpt==="NADIE"){ data["INFORMAR DE DETENCION"]="nadie."; }
-else if(infOpt==="OTRO"){ data["INFORMAR DE DETENCION"]= (data["INFORMAR DE DETENCION"]||""); }
-else { data["INFORMAR DE DETENCION"]= data["INFORMAR DE DETENCION"] || ""; }
+		const infOpt = data["INFORMAR DE DETENCION_OPCION"];
+		if(infOpt==="NADIE"){ data["INFORMAR DE DETENCION"]="nadie."; }
+		else if(infOpt==="OTRO"){ data["INFORMAR DE DETENCION"]= (data["INFORMAR DE DETENCION"]||""); }
+		else { data["INFORMAR DE DETENCION"]= data["INFORMAR DE DETENCION"] || ""; }
 
         const intOpt = data["INTERPRETE_OPCION"] || "NO";
 let interpreteDisplay = "NO";
@@ -945,6 +946,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </body>
 
 </html>
+
 
 
 
