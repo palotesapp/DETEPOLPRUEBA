@@ -226,14 +226,14 @@ textarea {
         </select>
         <input type="text" name="COMUNICARSE CON:" id="comunicarseTexto" placeholder="Nombre y teléfono" style="display:none;">
       </div>
-      <div class="field-card" style="color: orange;">
-        <label>Informar de detención</label>
-        <select name="INFORMAR DE SU DETENCION_OPCION" id="informardeOpcion">
-          <option value="NADIE" selected>NADIE</option>
-          <option value="OTRO">OTRO</option>
-        </select>
-		  <input type="text" name="INFORMAR DE SU DETENCION:" id="informardeTexto" placeholder="Nombre y teléfono" style="display:none;">
-      </div>
+     <div class="field-card" style="color: orange;">
+  <label>Informar de detención</label>
+  <select name="INFORMAR DE DETENCION_OPCION" id="informardeOpcion">
+    <option value="NADIE" selected>NADIE</option>
+    <option value="OTRO">OTRO</option>
+  </select>
+  <input type="text" name="INFORMAR DE DETENCION" id="informardeTexto" placeholder="Nombre y teléfono" style="display:none;">
+</div>
 
       <div class="field-card" style="color: orange;">
   <label>Intérprete</label>
@@ -470,10 +470,7 @@ async function cargarExcel() {
         if (qNorm === "NOMBREDELOSPADRES") { setSelectWithInput("NOMBRE_PADRES_OPCION", r); return; }
         if (qNorm === "ABOGADO") { setSelectWithInput("ABOGADO_OPCION", r); return; }
         if (qNorm === "COMUNICARSECON") { setSelectWithInput("COMUNICARSE CON_OPCION", r); return; }
-        if (qNorm === "INFORMARDESUDETENCION" || qNorm === "INFORMARDESUDETENCIONA" || qNorm === "INFORMARDESUDETENCIONA:") { 
-          setSelectWithInput("INFORMAR DE SU DETENCION_OPCION", r); 
-          return; 
-        }
+        if (qNorm === "INFORMARDEDETENCION") { setSelectWithInput("INFORMAR DE DETENCION_OPCION", r); return; }
         if (qNorm === "INTERPRETE") { setSelectWithInput("INTERPRETE_OPCION", r); return; }
 
         // Delitos múltiples
@@ -755,11 +752,10 @@ data["DELITO"]=delitoTexto;
         else if(ccOpt==="OTRO"){ data["COMUNICARSE CON:"]= (data["COMUNICARSE CON:"]||""); }
         else { data["COMUNICARSE CON:"]= data["COMUNICARSE CON:"] || ""; }
 
-	const infOpt = data["INFORMAR DE SU DETENCION_OPCION"];
-if(infOpt==="NADIE"){ data["INFORMAR DE SU DETENCION:"]="nadie."; }
-else if(infOpt==="OTRO"){ data["INFORMAR DE SU DETENCION:"]= (data["INFORMAR DE SU DETENCION:"]||""); }
-else { data["INFORMAR DE SU DETENCION:"]= data["INFORMAR DE SU DETENCION:"] || ""; }
-
+	const infOpt = data["INFORMAR DE DETENCION_OPCION"];
+if(infOpt==="NADIE"){ data["INFORMAR DE DETENCION"]="nadie."; }
+else if(infOpt==="OTRO"){ data["INFORMAR DE DETENCION"]= (data["INFORMAR DE DETENCION"]||""); }
+else { data["INFORMAR DE DETENCION"]= data["INFORMAR DE DETENCION"] || ""; }
 
         const intOpt = data["INTERPRETE_OPCION"] || "NO";
 let interpreteDisplay = "NO";
@@ -911,7 +907,7 @@ const filas = [
   ["Indicios por los que se detiene", U(data["INDICIOS POR LOS QUE SE DETIENE"])],
   ["Abogado", U(data["ABOGADO"])],
   ["Comunicarse con", U(data["COMUNICARSE CON:"])],
-  ["Informar de detención", U(data["INFORMAR DE SU DETENCION:"])],
+  ["Informar de detención", U(data["INFORMAR DE DETENCION"])],
   ["Intérprete", U(interpreteDisplay)],
   ["Médico", U(data["MEDICO"])],
   ["Consulado", U(data["CONSULADO"])],
@@ -949,6 +945,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </body>
 
 </html>
+
 
 
 
