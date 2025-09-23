@@ -93,6 +93,11 @@ textarea {
   }
 }
 
+	  #delitoOtroTexto::placeholder {
+  color: #ff0000; /* Cambia #ff0000 por el color que quieras */
+  opacity: 1;
+}
+
   </style>
 
 </head>
@@ -188,8 +193,8 @@ textarea {
   <input type="text" id="delitoOtroTexto" placeholder="Especificar y pulsar Enter" style="display:none;">
 
   <!-- sub-globo inferior -->
-  <div id="delitosSeleccionados" style="color: darkred; margin-top:8px; padding:5px; border:1px solid #ccc; min-height:30px;">
-    <em>Ningún delito seleccionado</em>';
+  <div id="delitosSeleccionados" style="color: red; margin-top:8px; padding:5px; border:1px solid #ccc; min-height:30px;">
+    <em>Ningún delito seleccionado</em>
   </div>
 </div>
       <div class="field-card" style="color: lightgreen;"><label>Indicativo</label><input type="text" name="Indicativo" id="indicativotexto" placeholder="A-000"></div>
@@ -946,6 +951,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </body>
 
 </html>
+
 
 
 
