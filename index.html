@@ -110,11 +110,12 @@ textarea {
   gap: 20px; /* espacio entre columnas */
   width: 100%;
   box-sizing: border-box;
+  margin-bottom: 30px; /* espacio debajo para separar del título */
 }
 
 .flex-row .field-card {
-  flex: 1 1 0; /* que cada uno crezca igual y ocupe la mitad */
-  min-width: 0; /* para evitar overflow */
+  flex: 1 1 0;
+  min-width: 0;
 }
 	  
   </style>
@@ -234,9 +235,9 @@ textarea {
     <label>Indicios por los que se detiene</label>
     <textarea name="INDICIOS POR LOS QUE SE DETIENE" id="indiciostexto" placeholder="Ej: Manifestaciones perjudicado, testigos..."></textarea>
   </div>
-
 </div>
-    <h2>⚖️ Derechos</h2>
+
+<h2>⚖️ Derechos</h2>
     <div class="grid-rows">
       <div class="field-card" style="color: orange;">
         <label>Abogado</label>
@@ -974,6 +975,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </body>
 
 </html>
+
 
 
 
