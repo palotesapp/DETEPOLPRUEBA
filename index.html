@@ -117,11 +117,13 @@ textarea {
   bottom: 5px;
   right: 5px;
   font-size: 10px;
-  color: rgba(255, 0, 0, 0.7); /* rojo con 50% de opacidad */
+  color: rgba(255, 0, 0, 0.5); /* rojo con 50% de opacidad */
   pointer-events: none;
   user-select: none;
   z-index: 9999;
   font-family: Arial, sans-serif;
+  text-align: center; /* para centrar las líneas */
+  line-height: 1.2; /* espacio entre líneas */
 }
 	  
   </style>
@@ -976,10 +978,15 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 </script>
-	<div id="marca-registro">103JBN486</div>
+	<div id="marca-registro">
+  103<br>
+  JBN<br>
+  486
+</div>
 </body>
 
 </html>
+
 
 
 
