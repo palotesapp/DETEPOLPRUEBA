@@ -106,6 +106,12 @@ textarea {
   color: darkcyan; /* si quieres mantener el color darkcyan */
 }
 
+.grid-rows-two-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: var(--space);
+}
+	  
   </style>
 
 </head>
@@ -213,12 +219,16 @@ textarea {
       <div class="field-card" style="color: lightgreen;"><label>Lugar de la detención</label><input type="text" name="LUGAR DE LA DETENCIÓN"></div>
       <div class="field-card" style="color: lightgreen;"><label>Hora del hecho</label><input type="time" name="HORA DEL HECHO" id="horaHecho"></div>
       <div class="field-card" style="color: lightgreen;"><label>Hora de la detención</label><input type="time" name="HORA DE LA DETENCIÓN" id="horaDetencion"></div>
-      <div class="field-card full-width" style="color: lightgreen;">
-  <label>Breve resumen de los hechos</label><textarea name="BREVE RESUMEN DE LOS HECHOS" id="brevetexto" placeholder="Ej: Autor de agresión con arma blanca..."></textarea>
-</div>
+     <div class="grid-rows-two-columns">
+  <div class="field-card" style="color: lightgreen;">
+    <label>Breve resumen de los hechos</label>
+    <textarea name="BREVE RESUMEN DE LOS HECHOS" id="brevetexto" placeholder="Ej: Autor de agresión con arma blanca..."></textarea>
+  </div>
 
-<div class="field-card full-width" style="color: lightgreen;">
-  <label>Indicios por los que se detiene</label><textarea name="INDICIOS POR LOS QUE SE DETIENE" id="indiciostexto" placeholder="Ej: Manifestaciones perjudicado, testigos..."></textarea>
+  <div class="field-card" style="color: lightgreen;">
+    <label>Indicios por los que se detiene</label>
+    <textarea name="INDICIOS POR LOS QUE SE DETIENE" id="indiciostexto" placeholder="Ej: Manifestaciones perjudicado, testigos..."></textarea>
+  </div>
 </div>
 	</div>
     <h2>⚖️ Derechos</h2>
@@ -959,6 +969,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </body>
 
 </html>
+
 
 
 
