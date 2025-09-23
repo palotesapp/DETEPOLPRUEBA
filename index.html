@@ -444,14 +444,12 @@ async function cargarExcel() {
       const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
       rows.forEach(([pregunta, respuesta]) => {
-        console.log("Pregunta leída:", pregunta, "Respuesta:", respuesta);
         if (!pregunta) return;
         const qNorm = normalizeKey(pregunta);
         const r = (respuesta || "").toString().trim();
 
         // Condición mejorada para TIPO DOCUMENTO
         if (qNorm.includes("TIPO") && qNorm.includes("DOCUMENTO")) {
-          console.log("Procesando TIPO DOCUMENTO con valor:", r);
           setSelectWithInput("TIPO DOCUMENTO_OPCION", r);
           return;
         }
@@ -483,22 +481,16 @@ async function cargarExcel() {
             if (el.tagName === "SELECT") {
               el.value = r;
               el.dispatchEvent(new Event("change"));
-            } 
-
-			  if (el.tagName === "INPUT" && el.type === "time") {
-  // Aceptar hh:mm o hh:mm:ss, y asignar solo hh:mm
-  const m = /^(\d{1,2}):(\d{2})(?::\d{2})?$/.exec(r);
-  if (m) {
-    const hh = m[1].padStart(2, '0');
-    const mm = m[2];
-    el.value = `${hh}:${mm}`;
-  } else {
-    el.value = "";
-  }
-}
-
-
-			  
+            } else if (el.tagName === "INPUT" && el.type === "time") {
+              // Aceptar hh:mm o hh:mm:ss, y asignar solo hh:mm
+              const m = /^(\d{1,2}):(\d{2})(?::\d{2})?$/.exec(r);
+              if (m) {
+                const hh = m[1].padStart(2, '0');
+                const mm = m[2];
+                el.value = `${hh}:${mm}`;
+              } else {
+                el.value = "";
+              }
             } else {
               el.value = r;
             }
@@ -513,7 +505,7 @@ async function cargarExcel() {
       document.getElementById("message").innerText = "❌ Error al cargar XLSX: " + (err?.message || err);
     }
   };
-}    
+}
 // Guardar con File System Access (evita MOTW)
     async function saveBlob(blob, filename){
       if(window.showSaveFilePicker){
@@ -947,4 +939,5 @@ document.addEventListener("DOMContentLoaded", function () {
 </body>
 
 </html>
+
 
