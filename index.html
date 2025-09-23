@@ -105,11 +105,11 @@ textarea {
   color: darkcyan; /* si quieres mantener el color darkcyan */
 }
 
-.grid-rows-two-columns {
+.grid-rows-three-columns {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Dos columnas iguales */
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: var(--space);
-  width: 100%; /* Ocupa todo el ancho disponible */
+  width: 100%;
   box-sizing: border-box;
 }
 	  
@@ -220,8 +220,8 @@ textarea {
       <div class="field-card" style="color: lightgreen;"><label>Lugar de la detención</label><input type="text" name="LUGAR DE LA DETENCIÓN"></div>
       <div class="field-card" style="color: lightgreen;"><label>Hora del hecho</label><input type="time" name="HORA DEL HECHO" id="horaHecho"></div>
       <div class="field-card" style="color: lightgreen;"><label>Hora de la detención</label><input type="time" name="HORA DE LA DETENCIÓN" id="horaDetencion"></div>
-  <div class="grid-rows-two-columns">
-  <div class="field-card" style="color: lightgreen;">
+ <div class="grid-rows-three-columns">
+  <div class="field-card" style="color: lightgreen; grid-column: span 2;">
     <label>Breve resumen de los hechos</label>
     <textarea name="BREVE RESUMEN DE LOS HECHOS" id="brevetexto" placeholder="Ej: Autor de agresión con arma blanca..."></textarea>
   </div>
@@ -229,7 +229,8 @@ textarea {
   <div class="field-card" style="color: lightgreen;">
     <label>Indicios por los que se detiene</label>
     <textarea name="INDICIOS POR LOS QUE SE DETIENE" id="indiciostexto" placeholder="Ej: Manifestaciones perjudicado, testigos..."></textarea>
-  </div>
+
+</div>
 </div>
     <h2>⚖️ Derechos</h2>
     <div class="grid-rows">
@@ -969,6 +970,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </body>
 
 </html>
+
 
 
 
