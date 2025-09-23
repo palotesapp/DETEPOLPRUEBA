@@ -357,9 +357,9 @@ inputOtro.addEventListener("keydown", e=>{
 function renderDelitos() {
   lista.innerHTML="";
   if(delitosElegidos.length===0){
-    lista.innerHTML="<em>Ningún delito seleccionado</em>";
-    return;
-  }
+    lista.innerHTML = '<em style="color: red; font-style: normal;">Ningún delito seleccionado</em>';
+  return;
+}
   delitosElegidos.forEach((d,i)=>{
     const span=document.createElement("span");
     span.textContent=d;
@@ -946,6 +946,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </body>
 
 </html>
+
 
 
 
