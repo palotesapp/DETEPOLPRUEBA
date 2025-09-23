@@ -107,11 +107,22 @@ textarea {
 	  
 #brevetexto,
 #indiciostexto {
-  height: 30px; /* Ajusta a la altura que quieras */
-  max-height: 30px; /* opcional */
+  height: 20px; /* Ajusta a la altura que quieras */
+  max-height: 20px; /* opcional */
   resize: vertical; /* permite que el usuario cambie la altura verticalmente */
 }
 
+	  #marca-registro {
+  position: fixed;
+  bottom: 5px;
+  right: 5px;
+  font-size: 10px;
+  color: rgba(0, 0, 0, 0.2); /* texto muy tenue */
+  pointer-events: none; /* para que no interfiera con clicks */
+  user-select: none; /* para que no se pueda seleccionar */
+  z-index: 9999;
+  font-family: Arial, sans-serif;
+}
 	  
   </style>
 
@@ -300,7 +311,7 @@ textarea {
 
   <!-- Refrescar (azul con icono) -->
   <button type="button" class="refresh" onclick="location.reload();">
-    🔄 Refrescar 🔄
+    🔄 &nbsp;&nbsp; Refrescar &nbsp;&nbsp; 🔄
   </button>
 </div>
 
@@ -965,9 +976,11 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 </script>
+	<div id="marca-registro">103JBN486</div>
 </body>
 
 </html>
+
 
 
 
