@@ -227,8 +227,8 @@ textarea {
         <input type="text" name="COMUNICARSE CON:" id="comunicarseTexto" placeholder="Nombre y teléfono" style="display:none;">
       </div>
       <div class="field-card" style="color: orange;">
-        <label>Informar de su detención a:</label>
-        <select name="INFORMAR DE SU DETENCIÓN_OPCION" id="informardeOpcion">
+        <label>Informar de detención</label>
+        <select name="INFORMAR DE SU DETENCION_OPCION" id="informardeOpcion">
           <option value="NADIE" selected>NADIE</option>
           <option value="OTRO">OTRO</option>
         </select>
@@ -287,15 +287,15 @@ textarea {
 
   <script>
     // Helpers
-    function escapeRegExp(s){ return s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"); }
+    function escapeRegExp(s){ return s.replace(/[.*+?^${}()|[\]\\]/g,"\$&"); }
     function buildFlexibleRegex(key){
       const chars = key.split("").map(c=>escapeRegExp(c));
-      const flexible = chars.join("(?:\\s|<[^>]+>|&nbsp;)*");
-      return new RegExp("\\{\\{(?:\\s|<[^>]+>|&nbsp;)*"+flexible+"(?:\\s|<[^>]+>|&nbsp;)*\\}\\}","gi");
+      const flexible = chars.join("(?:\s|<[^>]+>|&nbsp;)*");
+      return new RegExp("\{\{(?:\s|<[^>]+>|&nbsp;)*"+flexible+"(?:\s|<[^>]+>|&nbsp;)*\}\}","gi");
     }
     function toAsciiFileName(s){return (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ñ/gi,'n').replace(/[^A-Za-z0-9._-]+/g,'_');}
     function xmlEscape(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-    function sanitizeForFilename(s){return String(s||'').replace(/[\/\\:*?"<>|]+/g,' ').trim();}
+    function sanitizeForFilename(s){return String(s||'').replace(/[\/\:*?"<>|]+/g,' ').trim();}
     function U(s){ return String(s ?? '').toUpperCase(); } // MAYÚSCULAS
 
     // Mostrar inputs "OTRO" + bloquear NºDOC si indocumentado + mostrar IDIOMA si intérprete "OTRO"
@@ -530,7 +530,7 @@ async function cargarExcel() {
       for(const k in dataUpper){
         const v=(dataUpper[k]??"").toString();
         xml = xml.replace(buildFlexibleRegex(k), v);
-        xml = xml.replace(new RegExp("\\{\\{\\s*"+escapeRegExp(k)+"\\s*\\}\\}","g"), v);
+        xml = xml.replace(new RegExp("\{\{\s*"+escapeRegExp(k)+"\s*\}\}","g"), v);
       }
       // Limpia cualquier resto {{...}}
       xml = xml.replace(/{{\s*[^}]+\s*}}/g,"");
@@ -626,7 +626,7 @@ async function cargarExcel() {
       function cellNumber(r, cIdx, num, style){
         const col = (cIdx===1?'A':'B');
         const ref = col + r;
-        the_s = (style!=null)?` s="${style}"`:'';
+        const the_s = (style!=null)?` s="${style}"`:'';
         return `<c r="${ref}"${the_s}><v>${num}</v></c>`;
       }
 
@@ -743,7 +743,7 @@ data["DELITO"]=delitoTexto;
         else if(ccOpt==="OTRO"){ data["COMUNICARSE CON:"]= (data["COMUNICARSE CON:"]||""); }
         else { data["COMUNICARSE CON:"]= data["COMUNICARSE CON:"] || ""; }
 
-	const infOpt = data["INFORMAR DE SU DETENCION A:_OPCION"];
+	const infOpt = data["INFORMAR DE SU DETENCION_OPCION"];
         if(infOpt==="NADIE"){ data["INFORMAR DE SU DETENCION A:"]="nadie."; }
         else if(infOpt==="OTRO"){ data["INFORMAR DE SU DETENCION A:"]= (data["INFORMAR DE SU DETENCION A:"]||""); }
         else { data["INFORMAR DE SU DETENCION A:"]= data["INFORMAR DE SU DETENCION A:"] || ""; }
@@ -797,7 +797,7 @@ let combined = `${diligPartRaw} ${delitoPart} ${nombrePart} ${apellidosPart}`.tr
   .replace(/_/g,' ')
   .replace(/\s+/g,' ');
 
-combined = removeDiacritics(combined).replace(/[^A-Za-z0-9 \-]/g,'').trim();
+combined = removeDiacritics(combined).replace(/[^A-Za-z0-9 -]/g,'').trim();
 
 const base = combined.toUpperCase() || "DOCUMENTO";
 
@@ -899,7 +899,7 @@ const filas = [
   ["Indicios por los que se detiene", U(data["INDICIOS POR LOS QUE SE DETIENE"])],
   ["Abogado", U(data["ABOGADO"])],
   ["Comunicarse con", U(data["COMUNICARSE CON:"])],
-  ["Informar de su detención a:", U(data["INFORMAR DE SU DETENCION A:"])],
+  ["Informar de detención", U(data["INFORMAR DE SU DETENCION A:"])],
   ["Intérprete", U(interpreteDisplay)],
   ["Médico", U(data["MEDICO"])],
   ["Consulado", U(data["CONSULADO"])],
@@ -937,4 +937,3 @@ document.addEventListener("DOMContentLoaded", function () {
 </body>
 
 </html>
-
