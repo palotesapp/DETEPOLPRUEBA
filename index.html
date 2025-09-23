@@ -483,12 +483,22 @@ async function cargarExcel() {
             if (el.tagName === "SELECT") {
               el.value = r;
               el.dispatchEvent(new Event("change"));
-            } else if (el.tagName === "INPUT" && el.type === "time") {
-              if (/^\d{1,2}:\d{2}$/.test(r)) {
-                el.value = r.length === 4 ? "0" + r : r;
-              } else {
-                el.value = "";
-              }
+            } 
+
+			  if (el.tagName === "INPUT" && el.type === "time") {
+  // Aceptar hh:mm o hh:mm:ss, y asignar solo hh:mm
+  const m = /^(\d{1,2}):(\d{2})(?::\d{2})?$/.exec(r);
+  if (m) {
+    const hh = m[1].padStart(2, '0');
+    const mm = m[2];
+    el.value = `${hh}:${mm}`;
+  } else {
+    el.value = "";
+  }
+}
+
+
+			  
             } else {
               el.value = r;
             }
@@ -937,3 +947,4 @@ document.addEventListener("DOMContentLoaded", function () {
 </body>
 
 </html>
+
