@@ -446,7 +446,17 @@ async function cargarExcel() {
       rows.forEach(([pregunta, respuesta]) => {
         if (!pregunta) return;
         const qNorm = normalizeKey(pregunta);
-        const r = (respuesta || "").toString().trim();
+        let r = respuesta;
+
+        // Convertir número decimal Excel a hh:mm para horas
+        if (typeof r === 'number' && (qNorm === "HORADELHECHO" || qNorm === "HORADELADETENCION")) {
+          const totalMinutes = Math.round(r * 24 * 60);
+          const hh = String(Math.floor(totalMinutes / 60)).padStart(2, '0');
+          const mm = String(totalMinutes % 60).padStart(2, '0');
+          r = `${hh}:${mm}`;
+        } else {
+          r = (r || "").toString().trim();
+        }
 
         // Condición mejorada para TIPO DOCUMENTO
         if (qNorm.includes("TIPO") && qNorm.includes("DOCUMENTO")) {
@@ -939,5 +949,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </body>
 
 </html>
+
 
 
