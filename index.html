@@ -105,18 +105,7 @@ textarea {
   color: darkcyan; /* si quieres mantener el color darkcyan */
 }
 
-.flex-row {
-  display: flex;
-  gap: 20px; /* espacio entre columnas */
-  width: 100%;
-  box-sizing: border-box;
-  margin-bottom: 30px; /* espacio debajo para separar del título */
-}
 
-.flex-row .field-card {
-  flex: 1 1 0;
-  min-width: 0;
-}
 	  
   </style>
 
@@ -225,7 +214,7 @@ textarea {
       <div class="field-card" style="color: lightgreen;"><label>Lugar de la detención</label><input type="text" name="LUGAR DE LA DETENCIÓN"></div>
       <div class="field-card" style="color: lightgreen;"><label>Hora del hecho</label><input type="time" name="HORA DEL HECHO" id="horaHecho"></div>
       <div class="field-card" style="color: lightgreen;"><label>Hora de la detención</label><input type="time" name="HORA DE LA DETENCIÓN" id="horaDetencion"></div>
- <div class="flex-row">
+
   <div class="field-card" style="color: lightgreen;">
     <label>Breve resumen de los hechos</label>
     <textarea name="BREVE RESUMEN DE LOS HECHOS" id="brevetexto" placeholder="Ej: Autor de agresión con arma blanca..."></textarea>
@@ -975,6 +964,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </body>
 
 </html>
+
 
 
 
