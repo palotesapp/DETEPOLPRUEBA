@@ -115,25 +115,25 @@ h1 {
   /* Botones colores específicos */
  /* Colores */
 .actions .zip {
-  background-color: #FF4500;      /* Botón ZIP en azul oscuro */
+  background-color: #008080;      /* Botón descarga XLSX en teal */
 }
 .actions .xlsx {
-  background-color: #006400;   /* Botón XLSX en verde */
+  background-color: #006400;   /* Botón carga XLSX en verde */
 }
 .actions .refresh {
   background-color: #1E90FF;   /* Botón refrescar en azul */
 }
-	.actions {
+.actions {
   display: flex;
-  justify-content: center;   /* los centra */
-  gap: 12px;                 /* separación entre ellos */
-  margin-top: 26px;
+  flex-direction: column;   /* en columna */
+  align-items: center;      /* centrados */
+  gap: 10px;                /* separación vertical */
 }
 
 .actions button {
-  width: auto;               /* que no ocupen todo el ancho */
-  flex: 0 0 auto;            /* no se estiren */
-  padding: 14px 20px;        /* ajusta si quieres más pequeño */
+  width: 75%;               /* cada botón ocupa el 75% del contenedor */
+  max-width: 400px;         /* opcional: no pasar de 400px en pantallas grandes */
+  text-align: center;
 }
 
 
@@ -1196,6 +1196,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </body>
 
 </html>
+
 
 
 
