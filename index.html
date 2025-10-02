@@ -220,7 +220,7 @@ select {
           <option value="FEMENINO">FEMENINO</option>
         </select>
       </div>
-      <div class="field-card" style="color: lightblue;"><label>Nacionalidad</label><input type="text" name="NACIONALIDAD" id="nacionalidadtexto" placeholder="País"></div>
+     
       <div class="field-card" style="color: lightblue;"><label>Nombre</label><input type="text" name="Nombre" id="Nombre"></div>
       <div class="field-card" style="color: lightblue;"><label>Apellidos</label><input type="text" name="APELLIDOS" id="APELLIDOS"></div>
       <div class="field-card" style="color: lightblue;">
@@ -233,6 +233,7 @@ select {
       </div>
       <div class="field-card" style="color: lightblue;"><label>Fecha de nacimiento</label><input type="text" name="FECHA DE NACIMIENTO" placeholder="DD/MM/AAAA"></div>
       <div class="field-card" style="color: lightblue;"><label>Lugar de nacimiento</label><input type="text" name="LUGAR DE NACIMIENTO"></div>
+	  <div class="field-card" style="color: lightblue;"><label>Nacionalidad</label><input type="text" name="NACIONALIDAD" id="nacionalidadtexto" placeholder="País"></div>
       <div class="field-card" style="color: lightblue;">
         <label>Domicilio</label>
         <select name="DOMICILIO_OPCION" id="domicilioOpcion">
@@ -364,18 +365,18 @@ select {
 
   <!-- Descarga XLSX (darkblue con icono) -->
  <button type="button" class="zip" onclick="generarSoloXLSX()">
-  💾 Descargar XLSX ⬇️
+  💾 Descargar ⬇️
 </button>
 
 
   <!-- Cargar XLSX (verde con icono) -->
   <button type="button" class="xlsx" onclick="cargarExcel()">
-    📁 Cargar EXCEL 📁
+    📁 Cargar ⬆️
   </button>
 
   <!-- Refrescar (azul con icono) -->
   <button type="button" class="refresh" onclick="location.reload();">
-    🔄 &nbsp;&nbsp; Refrescar &nbsp;&nbsp; 🔄
+    🔄 Refrescar 🔄
   </button>
 </div>
 
@@ -1196,6 +1197,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </body>
 
 </html>
+
 
 
 
